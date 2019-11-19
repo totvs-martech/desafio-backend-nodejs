@@ -1,29 +1,30 @@
 # Backend
-This project is backend by Eduardo
+This project is backend by Eduardo.\
+Follow the steps
 
-## Install
+## First Step - Install
 Install dependencies `npm install` or `yarn install`
 
-## Copy
+## Secound Step - Copy
 Copy `.env` using `cp .env.example .env`\ 
 Add PORT to run the project (preference for 3000).\
 On variable `PORT` you can use `3000`\
 On variable `DATA_PATH` you can use `../`\
 On variable `NODE_ENV` use `development`, if you testing.\
 
-## Docker
+## Third Step - Docker
 Run docker compose for use PostgreSQL and Sequelize.\
 Run the command `docker-compose up`
 
-## Database
+## Fourth Step - Database
 When docker is up, generate database and tables.\
 Run the command `npx sequelize-cli db:migrate`.
 
-## Start/Test
+## Fifth Step - Start/Test
 First copy the file `config` with command `npm run config`\
 To start Application run the command `npm start` or `npm run dev` if you are a dev.
 
-## Check all is ok
+## Final Step - Check all is ok
 To check all is ok, you can use url `http://localhost:${PORT}/healthcheck`\
 Can be return 'All is ok.'
 
@@ -33,3 +34,8 @@ Can be return 'All is ok.'
 [X] ROUTES\
 If you need test the functions run the command `npm run test`.\
 We are using [jest](https://jestjs.io)
+
+## Use project
+If you are on FINAL STEP your project is running. So, to create product and list you can do this without needing a hash. But if you agreggate products in your cart you need generate a hash (this is like a cookie in your browse), this is generate to use REDIS because the products in your cart is temporary.\
+You should be the endpoint `/hash` with the method `POST`.\
+To generate should be like this `http://localhost:${PORT}/hash`.

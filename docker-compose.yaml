@@ -7,3 +7,19 @@ services:
       - "5432:5432"
     volumes:
       - ${DATA_PATH}/postgre:/var/lib/postgresql/data
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: unless-stopped
+    hostname: redis.local
+    ports:
+      - "127.0.0.1:6379:6379"
+  redis-commander:
+    container_name: redis-commander
+    image: tenstartups/redis-commander
+    restart: unless-stopped
+    command: --redis-host redis
+    links:
+    - "redis:redis"
+    ports:
+    - "6380:8081"
