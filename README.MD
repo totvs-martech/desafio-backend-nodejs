@@ -28,8 +28,8 @@ To check all is ok, you can use url `http://localhost:${PORT}/healthcheck`\
 Can be return 'All is ok.'
 
 ## TDD
-[V] CONTROLLER
-[X] REPOSITORY
-[X] ROUTES
+[V] CONTROLLER\
+[X] REPOSITORY\
+[X] ROUTES\
 If you need test the functions run the command `npm run test`.\
 We are using [jest](https://jestjs.io)
