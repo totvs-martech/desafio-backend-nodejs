@@ -1,5 +1,5 @@
 # Backend
-This project is backend by Casestore
+This project is backend by Eduardo
 
 ## Install
 Install dependencies
