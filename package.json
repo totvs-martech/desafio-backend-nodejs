@@ -1,0 +1,45 @@
+{
+  "name": "totvs-backend",
+  "version": "0.0.1",
+  "description": "Backend project by totvs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint *.js **/*.js",
+    "test": "jest",
+    "seeds": "node ./infra/database/seeds/generateSeeds.js",
+    "config": "cp ./config/config.example.json ./config/config.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:totvs-store/desafio-backend-nodejs.git"
+  },
+  "author": "Eduardo Neves",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/totvs-store/desafio-backend-nodejs/issues"
+  },
+  "homepage": "https://github.com/totvs-store/desafio-backend-nodejs#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "eslint": "^5.5.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "form-data": "^2.5.1",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.17.1",
+    "sequelize-cli": "^5.5.1"
+  }
+}

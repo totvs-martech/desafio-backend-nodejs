@@ -1,0 +1,9 @@
+version: "3"
+services:
+  db:
+    image: "postgres:11"
+    container_name: "Postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${DATA_PATH}/postgre:/var/lib/postgresql/data
