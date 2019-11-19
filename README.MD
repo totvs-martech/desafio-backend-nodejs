@@ -2,8 +2,7 @@
 This project is backend by Eduardo
 
 ## Install
-Install dependencies
-`npm install` or `yarn install`
+Install dependencies `npm install` or `yarn install`
 
 ## Copy
 Copy `.env` using `cp .env.example .env`\ 
@@ -14,7 +13,7 @@ On variable `NODE_ENV` use `development`, if you testing.\
 
 ## Docker
 Run docker compose for use PostgreSQL and Sequelize.\
-`docker-compose up`
+Run the command `docker-compose up`
 
 ## Database
 When docker is up, generate database and tables.\
@@ -27,3 +26,10 @@ To start Application run the command `npm start` or `npm run dev` if you are a d
 ## Check all is ok
 To check all is ok, you can use url `http://localhost:${PORT}/healthcheck`\
 Can be return 'All is ok.'
+
+## TDD
+[V] CONTROLLER
+[X] REPOSITORY
+[X] ROUTES
+If you need test the functions run the command `npm run test`.\
+We are using [jest](https://jestjs.io)
