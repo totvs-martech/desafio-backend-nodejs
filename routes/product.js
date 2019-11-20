@@ -8,6 +8,7 @@ const { urlencoded, json } = require('body-parser');
 const router = new Router({ mergeParams: true });
 const Response = require('../infra/interceptor/response')
 const Product = require('../controller/product')
+const oauth = require('../infra/middleware/auth')
 
 router.use(urlencoded({ extended: true }));
 router.use(json());
@@ -15,7 +16,7 @@ router.use(json());
 /**
  * POST {domain}/product
  */
-router.post('/', async (req, res, next) => {
+router.post('/', oauth.auth, async (req, res, next) => {
   if (!req.files) {
     Response.internalError(res, 'No file uploaded')
   }
@@ -33,7 +34,7 @@ router.post('/', async (req, res, next) => {
 /**
  * GETALL {domain}/product
  */
-router.get('/', (req, res, next) => {
+router.get('/', oauth.auth, (req, res, next) => {
   const product = new Product()
   product
     .listAll(req.query)
@@ -46,7 +47,7 @@ router.get('/', (req, res, next) => {
 /**
  * GET {domain}/product/:id
  */
-router.get('/:id', (req, res, next) => {
+router.get('/:id', oauth.auth, (req, res, next) => {
   const product = new Product()
   product
     .getById(req.params.id)
@@ -59,7 +60,7 @@ router.get('/:id', (req, res, next) => {
 /**
  * PUT {domain}/product/:id
  */
-router.put('/:id', (req, res, next) => {
+router.put('/:id', oauth.auth, (req, res, next) => {
   const product = new Product()
   product
     .update(req.params.id, req.body)
@@ -72,7 +73,7 @@ router.put('/:id', (req, res, next) => {
 /**
  * DEL {domain}/product/:id
  */
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', oauth.auth, (req, res, next) => {
   const product = new Product()
   product
     .delete(req.params.id)
@@ -85,10 +86,11 @@ router.delete('/:id', (req, res, next) => {
 /**
  * POST {domain}/product/:id/add-cart
  */
-router.post('/:id/add-cart', (req, res, next) => {
+router.post('/:id/add-cart', oauth.auth, (req, res, next) => {
   const product = new Product()
+  
   product
-    .addProductCart(req.params.id, req.headers['cookie'])
+    .addProductCart(req.params.id, req.headers['authorization'])
     .then((cart) => res.json(cart))
     .catch((err) => {
       next(Response.internalError(res, err.message))
@@ -98,10 +100,10 @@ router.post('/:id/add-cart', (req, res, next) => {
 /**
  * POST {domain}/product/:id/add-cart
  */
-router.post('/:id/remove-cart', (req, res, next) => {
+router.post('/:id/remove-cart', oauth.auth, (req, res, next) => {
   const product = new Product()
   product
-    .removeProductCart(req.params.id, req.headers['cookie'])
+    .removeProductCart(req.params.id, req.headers['authorization'])
     .then((cart) => res.json(cart))
     .catch((err) => {
       next(Response.internalError(res, err.message))

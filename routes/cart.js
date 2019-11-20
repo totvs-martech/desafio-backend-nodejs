@@ -8,16 +8,18 @@ const { urlencoded, json } = require('body-parser');
 const router = new Router({ mergeParams: true });
 const Response = require('../infra/interceptor/response')
 const Cart = require('../controller/cart')
+const oauth = require('../infra/middleware/auth')
+
 router.use(urlencoded({ extended: true }));
 router.use(json());
 
 /**
  * GET {domain}/cart
  */
-router.get('/', (req, res, next) => {
+router.get('/', oauth.auth, (req, res, next) => {
   const cart = new Cart()
   cart
-    .getCartByKey(req.headers['cookie'])
+    .getCartByKey(req.headers['authorization'])
     .then((hashGenerated) => res.json(hashGenerated))
     .catch((err) => {
       next(Response.internalError(res, err.message))
@@ -27,10 +29,10 @@ router.get('/', (req, res, next) => {
 /**
  * POST {domain}/cart/checkout
  */
-router.post('/checkout', (req, res, next) => {
+router.post('/checkout', oauth.auth, (req, res, next) => {
   const cart = new Cart()
   cart
-    .checkout(req.headers['cookie'])
+    .checkout(req.headers['authorization'])
     .then((hashGenerated) => res.json(hashGenerated))
     .catch((err) => {
       next(Response.internalError(res, err.message))

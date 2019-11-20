@@ -7,7 +7,7 @@ Follow the steps.\
 ## First Step - Install
 Install dependencies `npm install` or `yarn install`
 
-## Secound Step - Copy
+## Second Step - Copy
 Copy `.env` using `cp .env.example .env`\
 Add PORT to run the project (preference for 3000).\
 On variable `PORT` you can use `3000`\
@@ -40,6 +40,38 @@ If you need test the functions run the command `npm run test`.\
 We are using [jest](https://jestjs.io)
 
 ## Use project
-If you are on FINAL STEP your project is running. So, to create product and list you can do this without needing a hash. But if you agreggate products in your cart you need generate a hash (this is like a cookie in your browse), this is generate to use REDIS because the products in your cart is temporary.\
-You should be the endpoint `/hash` with the method `POST`.\
-To generate should be like this `http://localhost:${PORT}/hash`.
+If you are on FINAL STEP your project is running. So, to create product and list you can do this without needing login. To agreggate products in your cart you need login on backend to (this is like a cookie in your browse), this are use on REDIS because the products in your cart is temporary and the JWT to.\
+OBS: Always to access any endpoints is necessary in header `Authorization: Bearer ${YOUR_TOKEN_LOGIN}`\
+1) Register:\
+Use `/user` with method `POST`.\
+Required: Name, email and password.\
+
+2) Login:\
+Use `/user/login` with method `POST`.\
+Required: email and password.\
+OBS: Returned on response the key `token` you'll use on `header`.\
+
+3) Create Product:\
+On Header you are add `Authorization` with value `token` returned on second step\
+Use `/product` with method `POST`.\
+Required: name, value and factor.\
+
+4) Get all Products:\
+On Header you are add `Authorization` with value `token` returned on second step\
+Use `/product` with method `GET`.\
+
+5) List cart:\
+On Header you are add `Authorization` with value `token` returned on second step\
+Use `/cart` with method `GET`.\
+
+6) Add Product on cart:\
+On Header you are add `Authorization` with value `token` returned on second step\
+Use `/product/:id/add-cart` with method `POST`.\
+
+7) Remove Product on cart:\
+On Header you are add `Authorization` with value `token` returned on second step\
+Use `/product/:id/remove-cart` with method `POST`.\
+
+7) Checkout on cart:\
+On Header you are add `Authorization` with value `token` returned on second step\
+Use `/cart/checkout` with method `POST`.\
