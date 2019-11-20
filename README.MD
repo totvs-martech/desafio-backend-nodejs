@@ -6,11 +6,11 @@ Follow the steps
 Install dependencies `npm install` or `yarn install`
 
 ## Secound Step - Copy
-Copy `.env` using `cp .env.example .env`\ 
+Copy `.env` using `cp .env.example .env`\
 Add PORT to run the project (preference for 3000).\
 On variable `PORT` you can use `3000`\
 On variable `DATA_PATH` you can use `../`\
-On variable `NODE_ENV` use `development`, if you testing.\
+On variable `NODE_ENV` use `development`, if you testing.
 
 ## Third Step - Docker
 Run docker compose for use PostgreSQL and Sequelize.\
@@ -32,6 +32,7 @@ Can be return 'All is ok.'
 [V] CONTROLLER\
 [X] REPOSITORY\
 [X] ROUTES\
+[X] CONNECTION TO DB\
 If you need test the functions run the command `npm run test`.\
 We are using [jest](https://jestjs.io)
 

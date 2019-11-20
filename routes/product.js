@@ -8,6 +8,10 @@ const { urlencoded, json } = require('body-parser');
 const router = new Router({ mergeParams: true });
 const Response = require('../infra/interceptor/response')
 const Product = require('../controller/product')
+
+const redis = require("redis")
+const client = redis.createClient()
+
 router.use(urlencoded({ extended: true }));
 router.use(json());
 
@@ -80,6 +84,33 @@ router.delete('/:id', (req, res, next) => {
       next(Response.internalError(res, err.message))
     })
 })
+
+/**
+ * POST {domain}/product/:id/add-cart
+ */
+router.post('/:id/add-cart', (req, res, next) => {
+  const product = new Product()
+  product
+    .addCart(req.params.id, req.headers['cookie'])
+    .then((teste) => res.json(teste))
+    .catch((err) => {
+      next(Response.internalError(res, err.message))
+    })
+})
+
+/**
+ * POST {domain}/product/:id/add-cart
+ */
+router.post('/:id/remove-cart', (req, res, next) => {
+  const product = new Product()
+  product
+    .removeCart(req.params.id, req.headers['cookie'])
+    .then((teste) => res.json(teste))
+    .catch((err) => {
+      next(Response.internalError(res, err.message))
+    })
+})
+
 
 module.exports = (appObj) => {
   return {
