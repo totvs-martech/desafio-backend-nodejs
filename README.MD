@@ -1,6 +1,8 @@
 # Backend
 This project is backend by Eduardo.\
-Follow the steps
+Follow the steps.\
+** Install nodeJS before start. **\
+** Open terminal and enter on project folder **
 
 ## First Step - Install
 Install dependencies `npm install` or `yarn install`
@@ -10,7 +12,8 @@ Copy `.env` using `cp .env.example .env`\
 Add PORT to run the project (preference for 3000).\
 On variable `PORT` you can use `3000`\
 On variable `DATA_PATH` you can use `../`\
-On variable `NODE_ENV` use `development`, if you testing.
+On variable `NODE_ENV` use `development`, if you testing.\
+On variable `API_KEY_PAGARME` use your api_key getting on website.
 
 ## Third Step - Docker
 Run docker compose for use PostgreSQL and Sequelize.\
@@ -21,7 +24,7 @@ When docker is up, generate database and tables.\
 Run the command `npx sequelize-cli db:migrate`.
 
 ## Fifth Step - Start/Test
-First copy the file `config` with command `npm run config`\
+First copy the file `config` with command `npm run config`.\
 To start Application run the command `npm start` or `npm run dev` if you are a dev.
 
 ## Final Step - Check all is ok

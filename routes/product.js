@@ -9,9 +9,6 @@ const router = new Router({ mergeParams: true });
 const Response = require('../infra/interceptor/response')
 const Product = require('../controller/product')
 
-const redis = require("redis")
-const client = redis.createClient()
-
 router.use(urlencoded({ extended: true }));
 router.use(json());
 
@@ -91,8 +88,8 @@ router.delete('/:id', (req, res, next) => {
 router.post('/:id/add-cart', (req, res, next) => {
   const product = new Product()
   product
-    .addCart(req.params.id, req.headers['cookie'])
-    .then((teste) => res.json(teste))
+    .addProductCart(req.params.id, req.headers['cookie'])
+    .then((cart) => res.json(cart))
     .catch((err) => {
       next(Response.internalError(res, err.message))
     })
@@ -104,8 +101,8 @@ router.post('/:id/add-cart', (req, res, next) => {
 router.post('/:id/remove-cart', (req, res, next) => {
   const product = new Product()
   product
-    .removeCart(req.params.id, req.headers['cookie'])
-    .then((teste) => res.json(teste))
+    .removeProductCart(req.params.id, req.headers['cookie'])
+    .then((cart) => res.json(cart))
     .catch((err) => {
       next(Response.internalError(res, err.message))
     })

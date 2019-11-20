@@ -17,7 +17,20 @@ router.use(json());
 router.get('/', (req, res, next) => {
   const cart = new Cart()
   cart
-    .getCart(req.headers['cookie'])
+    .getCartByKey(req.headers['cookie'])
+    .then((hashGenerated) => res.json(hashGenerated))
+    .catch((err) => {
+      next(Response.internalError(res, err.message))
+    })
+})
+
+/**
+ * POST {domain}/cart/checkout
+ */
+router.post('/checkout', (req, res, next) => {
+  const cart = new Cart()
+  cart
+    .checkout(req.headers['cookie'])
     .then((hashGenerated) => res.json(hashGenerated))
     .catch((err) => {
       next(Response.internalError(res, err.message))

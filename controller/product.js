@@ -1,8 +1,7 @@
 'use strict'
 
 const ProductRepository = require('../repository/product')
-const redis = require("redis")
-const client = redis.createClient()
+const { client } = require('../infra/interceptor/redis')
 
 module.exports = class Product {
   listAll (query) {
@@ -21,7 +20,7 @@ module.exports = class Product {
     }
   }
 
-  async addCart (productId, key) {
+  async addProductCart (productId, key) {
     try {
       const product = await ProductRepository.getById(productId)
       const amount = 1
@@ -34,17 +33,17 @@ module.exports = class Product {
         amount,
         total
       }
-      const data = await this.verifyKey(key, newBodyProduct)
+      const data = await this.verifyKey(key)
       return this.alterBodyKey(key, 'plus', data, newBodyProduct)
     } catch (error) {
       return error
     }
   }
 
-  async removeCart (productId, key) {
+  async removeProductCart (productId, key) {
     try {
       const product = await ProductRepository.getById(productId)
-      const data = await this.verifyKey(key, product)
+      const data = await this.verifyKey(key)
       return this.alterBodyKey(key, 'less', data, product)
     } catch (error) {
       return error
@@ -55,12 +54,12 @@ module.exports = class Product {
     return amount * value;
   }
 
-  async verifyKey (key, product) {
+  async verifyKey (key) {
     return new Promise((resolve, reject) => {
       client.get(key, (err, reply) => {
         if (err || reply === null) {
-          client.set(key, JSON.stringify([product]))
-          resolve([product])
+          client.set(key, JSON.stringify([]))
+          resolve([])
         } else {
           resolve(JSON.parse(reply))
         }
@@ -71,13 +70,14 @@ module.exports = class Product {
   async alterBodyKey (key, type, products, product) {
     try {
       const index = await products.findIndex(p => p.id === product.id)
-      if (index < 0) {
-        return products
-      }
       if (index >= 0) {
-        products = await this.sumOrSubtract(products, product, type, index)
+        products = type === 'plus'
+          ? await this.sum(products, product, index)
+          : await this.subtract(products, product, index)
       } else {
-        products.push(product)
+        if (type === 'plus') {
+          products.push(product)
+        }
       }
       await client.set(key, JSON.stringify(products))
       return products
@@ -86,17 +86,18 @@ module.exports = class Product {
     }
   }
 
-  async sumOrSubtract (products, product, type, index) {
-    if (type === 'plus') {
-      products[index].amount++
-      products[index].total = await this.countTotal(products[index].amount, product.value)
+  async sum (products, product, index) {
+    products[index].amount++
+    products[index].total = await this.countTotal(products[index].amount, product.value)
+    return products
+  }
+
+  async subtract (products, product, index) {
+    if (products[index].amount === 1) {
+      products = products.filter(p => p.id !== product.id)
     } else {
-      if (products[index].amount === 1) {
-        products = products.filter(p => p.id !== product.id)
-      } else {
-        products[index].amount--
-        products[index].total = await this.countTotal(products[index].amount, product.value)
-      }
+      products[index].amount--
+      products[index].total = await this.countTotal(products[index].amount, product.value)
     }
     return products
   }

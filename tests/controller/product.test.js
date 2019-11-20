@@ -7,7 +7,7 @@ describe('Verify Products: ', () => {
     product = new Product()
   })
 
-  test('Get All: ', async () => {
+  test('List All: ', async () => {
     const mockGetAllProduct = jest.spyOn(ProductRepository, 'get')
     mockGetAllProduct.mockImplementation(async () => {
       return Array
@@ -32,6 +32,41 @@ describe('Verify Products: ', () => {
       image: expect.any(String)
     })
     mockCreateProduct.mockRestore()
+  })
+
+  test('Add Product in cart: ', async () => {
+    const mockProduct = jest.spyOn(ProductRepository, 'getById')
+    mockProduct.mockImplementation(async () => {
+      return bodyProduct()
+    })
+
+    const mockCountTotal = jest.spyOn(Product.prototype, 'countTotal')
+    mockCountTotal.mockImplementation(() => {
+      return 100
+    })
+
+    const mockVerifyKey = jest.spyOn(Product.prototype, 'verifyKey')
+    mockVerifyKey.mockImplementation(() => {
+      return Array
+    })
+
+    const mockAlterBodyKey= jest.spyOn(Product.prototype, 'alterBodyKey')
+    mockAlterBodyKey.mockImplementation(() => {
+      return Array
+    })
+
+    const returnMethod = await product.addProductCart('1', '7d59898a82f7043841fd876ed32c35fcf2cc76ad')
+    expect(returnMethod).toBe(Array)
+
+    mockProduct.mockRestore()
+    mockCountTotal.mockRestore()
+    mockVerifyKey.mockRestore()
+    mockAlterBodyKey.mockRestore()
+  })
+
+  test('Count Total: ', async () => {
+    const returnMethod = await product.countTotal(2, 100)
+    expect(returnMethod).toBe(200)
   })
 
   afterEach(() => {
