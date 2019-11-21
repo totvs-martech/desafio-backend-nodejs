@@ -21,7 +21,7 @@ On variable `REDIS_HOST` by pattern are `127.0.0.1`, but you can alter.
 
 ## Third Step - Docker
 Run docker compose for use PostgreSQL and REDIS.\
-Run the command `docker-compose up`
+Run the command `docker-compose up` or `docker-compose up -d` to run in background.
 
 ## Fourth Step - Database
 When docker is up, generate database and tables.\
@@ -34,7 +34,7 @@ To start Application run the command `npm start` or `npm run dev` if you are a d
 
 ## Final Step - Check all is ok
 To check all is ok, you can use url `http://localhost:${PORT}/healthcheck` with method `GET`.\
-Can be return 'All is ok.'
+Can be return 'It is all ok.'
 
 ## TDD
 [V] CONTROLLER\

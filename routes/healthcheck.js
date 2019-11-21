@@ -10,7 +10,7 @@ router.use(json());
  * POST {domain}/
  */
 router.get('/', (req, res, next) => {
-  res.json('All is ok');
+  res.json('It is all ok.');
 });
 
 module.exports = () => {
