@@ -1,97 +1,87 @@
-# Desafio Backend Developer
-A Totvs está criando um aplicativo de e-commerce, foi feita uma planning com o Time o qual você é integrante e a Sprint começou. Suas tarefas são as seguintes: 
+# Backend
+This project is backend by Eduardo.\
+Follow the steps.\
+** Clone this repo in your machine **
+** Install nodeJS before start. **\
+** Open terminal and enter on project folder **
 
-##### Criação de Produtos na loja ###
-Criar os endpoints para adicionar e listar os produtos da loja. Esse produto deve ter os seguintes atributos: Nome, Descrição, Imagem, Valor e Fator. Existem três fatores A, B e C.  
+## First Step - Install
+Install dependencies `npm install` or `yarn install`
 
-##### Criação do Carrinho de Compras ###
-Criar endpoints para adicionar, consultar e remover os produtos do carrinho de compras. A consulta dos produtos deve conter além da lista, a quantidade e valor total dos produtos adicionados seguindo a seguinte regra de fator
+## Second Step - Copy
+Copy `.env` using `cp .env.example .env`.\
+Add PORT to run the project (preference for 3000).\
+Open file `.env`.\
+On variable `PORT` you can use `3000`\
+On variable `DATA_PATH` you can use `../`\
+On variable `NODE_ENV` use `development`, if you are testing.\
+On variable `API_KEY_PAGARME` use `ak_test_Fdo1KyqBTdnTFeLgBhkgRcgm9hwdzd` or your api_key getting on website.\
+On variable `REDIS_PORT` by pattern are `6379`, but you can alter.\
+On variable `REDIS_HOST` by pattern are `127.0.0.1`, but you can alter.
 
- - Os produtos de fator A tem um desconto progressivo de 1% a cada item adicionado no carrinho limitado a 5% de desconto. 
- - Os produtos de fator B tem um desconto progressivo de 5% a cada item adicionado no carrinho limitado a 15% de desconto.
- - Os produtos de fator C tem um desconto progressivo de 10% a cada item adicionado no carrinho limitado a 30% de desconto.
- - Um detalhe importante, o total de desconto do carrinho de compras não pode superar 30%.
+## Third Step - Docker
+Run docker compose for use PostgreSQL and REDIS.\
+Run the command `docker-compose up` or `docker-compose up -d` to run in background.
 
-##### Checkout pagar.me ###
-Para finalizar, crie um endpoint para fazer o checkout do carrinho de compras através do pagar.me
+## Fourth Step - Database
+When docker is up, generate database and tables.\
+First copy the file `config` with command `npm run config`.\
+You need create database on PostgreSQL. You can use a software to this. I was use [NAVICAT](https://www.navicat.com/en/download/navicat-premium)\
+Run the command `npx sequelize-cli db:migrate`.
 
-#### Requisitos:
- - Utilizar Node JS.
- - Gestão de dependências via gerenciador de pacotes.
- - Persistir os dados.
- - Descreva no README os passos para execução do seu projeto.
- - Deixe seu repositório público para analise do Pull Request.
+## Fifth Step - Start/Test
+To start Application run the command `npm start` or `npm run dev` if you are a dev.
 
-#### Ganha mais pontos:
- - Criação testes unitários
- - Garantia da segurança dos dados
- - Criação de uma estrutura de deploy da aplicação
- - Garantia a escalabilidade da aplicação (Pessoas | Infraestrutura)
- - Fique a vontade para adicionar mais features na loja desde que esteja dentro do contexto.
+## Final Step - Check all is ok
+To check all is ok, you can use url `http://localhost:${PORT}/healthcheck` with method `GET`.\
+Can be return 'It is all ok.'
 
-#### Submissão
- - Criar um fork desse projeto e entregar via Pull Request
+## TDD
+[V] CONTROLLER\
+[X] REPOSITORY\
+[X] ROUTES\
+[X] CONNECTION TO DB\
+If you need test the functions run the command `npm run test`.\
+We are using [jest](https://jestjs.io)
 
-#### Prazo de Entrega
- - 4 Dias
+## Use project
+If you are on FINAL STEP your project is running. So, to create product and list you can do this without needing login.\
+OBS: Always to access any endpoints is necessary in header `Authorization: Bearer ${YOUR_TOKEN_LOGIN}`\
+OBS: Cart key is generate by your cookie. For default is the website generate this token, but if you prefer you can add the key `cookie` on your `header`.
 
-#### Dados de acesso a api do pagar.me
- - Documentação: https://docs.pagar.me/reference
- - Endpoint para o Checkout: https://api.pagar.me/1/transactions
- - ApiKey: ak_test_Fdo1KyqBTdnTFeLgBhkgRcgm9hwdzd
-###Json de Envio:
-```js
-{
-    "amount": 21000,
-    "card_number": "4111111111111111",
-    "card_cvv": "123",
-    "card_expiration_date": "0922",
-    "card_holder_name": "João das Neves",
-    "customer": {
-      "external_id": "#3311",
-      "name": "João das Neves Braulio",
-      "type": "individual",
-      "country": "br",
-      "email": "joaodasneves@got.com",
-      "documents": [
-        {
-          "type": "cpf",
-          "number": "00000000000"
-        }
-      ],
-      "phone_numbers": ["+5511999998888", "+5511888889999"],
-      "birthday": "1965-01-01"
-    },
-    "billing": {
-      "name": "João das Neves",
-      "address": {
-        "country": "br",
-        "state": "sp",
-        "city": "Cotia",
-        "neighborhood": "Rio Cotia",
-        "street": "Rua Matrix",
-        "street_number": "9999",
-        "zipcode": "06714360"
-      }
-    },
-    "shipping": {
-      "name": "Neo Reeves",
-      "fee": 1000,
-      "delivery_date": "2000-12-21",
-      "expedited": true,
-      "address": {
-        "country": "br",
-        "state": "sp",
-        "city": "Cotia",
-        "neighborhood": "Rio Cotia",
-        "street": "Rua Matrix",
-        "street_number": "9999",
-        "zipcode": "06714360"
-      }
-    },
-    "items": [
-   ITEMS_DO_SEU_CARRINHO
-    ]
-}
-```
-# Boa Sorte!
+1) Register:\
+Use `/user` with method `POST`.\
+Required: Name, email and password.
+
+2) Login:\
+Use `/user/login` with method `POST`.\
+Required: email and password.\
+OBS: Returned on response the key `token` you'll use on `header`.
+
+3) Create Product:\
+On Header you are add `Authorization` with value `Bearer ${token}` returned on second step\
+Use `/product` with method `POST`.\
+Required: name, value and factor.
+
+4) Get all Products:\
+On Header you are add `Authorization` with value `Bearer ${token}` returned on second step\
+Use `/product` with method `GET`.
+
+5) List cart:\
+Use `/cart` with method `GET`.
+
+6) Add Product on cart:\
+Use `/product/:id/add-cart` with method `POST`.
+
+7) Remove Product on cart:\
+Use `/product/:id/remove-cart` with method `POST`.
+
+7) Checkout on cart:\
+On Header you are add `Authorization` with value `Bearer ${token}` returned on second step\
+Use `/cart/checkout` with method `POST`.
+
+## Deploy
+On file `post-receive` in folder `hooks` alter the variablea `${PATH}` and `${NAME_PROJECT}` to the values you set.\
+Next, create file `post-receive` in folder `.git/hooks` in your server.\
+Finnaly, create you deploy you need add deploy on remote on your machine.\
+Like `git remote add deploy ${USER}@${DOMAIN}:/${PATH}/${NAME_PROJECT}/.git`
