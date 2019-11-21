@@ -24,6 +24,23 @@ describe('Verify User: ', () => {
     mockCreateUser.mockRestore()
   })
 
+  test('Get user by params to login: ', async () => {
+    const mockGetParamsLogin= jest.spyOn(UserRepository, 'getLogin')
+    mockGetParamsLogin.mockImplementation(async () => {
+      return bodyUser()
+    })
+
+    const returnMethod = await user.getByParams({})
+    expect(returnMethod).toMatchObject({
+      id: expect.any(Number),
+      name: expect.any(String),
+      email: expect.any(String),
+      password: expect.any(String)
+    })
+
+    mockGetParamsLogin.mockRestore()
+  })
+
   afterEach(() => {
     user = null
   })
