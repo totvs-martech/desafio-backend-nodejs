@@ -82,5 +82,6 @@ Use `/cart/checkout` with method `POST`.
 
 ## Deploy
 On file `post-receive` in folder `hooks` alter the variablea `${PATH}` and `${NAME_PROJECT}` to the values you set.\
-And next, create you deploy you need add deploy on remote.\
+Next, create this file in folder `.git/hooks`
+Finnaly, create you deploy you need add deploy on remote.\
 Like `git remote add deploy ${USER}@${DOMAIN}:/${PATH}/${NAME_PROJECT}/.git`

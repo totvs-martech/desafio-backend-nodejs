@@ -17,11 +17,10 @@ router.use(json());
  * POST {domain}/product
  */
 router.post('/', oauth.auth, async (req, res, next) => {
-  if (!req.files) {
-    Response.internalError(res, 'No file uploaded')
+  if (req.files) {
+    await req.files.image.mv('./uploads/' + req.files.image.name)
+    req.body.image = req.files.image.name
   }
-  await req.files.image.mv('./uploads/' + req.files.image.name)
-  req.body.image = req.files.image.name
   const product = new Product()
   product
     .create(req.body)

@@ -113,11 +113,11 @@ module.exports = class Product {
       const amount = await this.countAmount(cart)
       
       const productsFactorA = await this.getProductsByFactor(cart, 'A')
-      const discountA = await this.countDiscountA(productsFactorA)
+      const discountA = await this.countDiscount(productsFactorA, 0, 5, 1)
       const productsFactorB = await this.getProductsByFactor(cart, 'B')
-      const discountB = await this.countDiscountB(productsFactorB)
+      const discountB = await this.countDiscount(productsFactorB, 0, 15, 5)
       const productsFactorC = await this.getProductsByFactor(cart, 'C')
-      const discountC = await this.countDiscountC(productsFactorC)
+      const discountC = await this.countDiscount(productsFactorC, 0, 30, 10)
 
       const discount = await this.sumDiscount(discountA, discountB, discountC)
       const body = {
@@ -163,56 +163,20 @@ module.exports = class Product {
     })
   }
 
-  async countDiscountA (products, totalDiscount = 0) {
+  async countDiscount (products, sumDiscount, maxDiscount, discount) {
     return new Promise((resolve, reject) => {
       if (products.length > 0) {
         const product = products.pop()
-        this.verifyDiscount(totalDiscount, resolve, 5)
+        this.verifyDiscount(sumDiscount, resolve, maxDiscount)
         for (let index = 0; index < product.amount; index++) {
-          this.verifyDiscount(totalDiscount, resolve, 5)
-          totalDiscount = totalDiscount + 1
+          this.verifyDiscount(sumDiscount, resolve, maxDiscount)
+          sumDiscount = sumDiscount + discount
         }
-        this.countDiscountA(products, totalDiscount)
+        this.countDiscount(products, sumDiscount, maxDiscount, discount)
           .then(resolve)
           .catch(reject)
       } else {
-        resolve(totalDiscount)
-      }
-    })
-  }
-
-  async countDiscountB (products, totalDiscount = 0) {
-    return new Promise((resolve, reject) => {
-      if (products.length > 0) {
-        const product = products.pop()
-        this.verifyDiscount(totalDiscount, resolve, 15)
-        for (let index = 0; index < product.amount; index++) {
-          this.verifyDiscount(totalDiscount, resolve, 15)
-          totalDiscount = totalDiscount + 5
-        }
-        this.countDiscountA(products, totalDiscount)
-          .then(resolve)
-          .catch(reject)
-      } else {
-        resolve(totalDiscount)
-      }
-    })
-  }
-
-  async countDiscountC (products, totalDiscount = 0) {
-    return new Promise((resolve, reject) => {
-      if (products.length > 0) {
-        const product = products.pop()
-        this.verifyDiscount(totalDiscount, resolve, 30)
-        for (let index = 0; index < product.amount; index++) {
-          this.verifyDiscount(totalDiscount, resolve, 30)
-          totalDiscount = totalDiscount + 10
-        }
-        this.countDiscountA(products, totalDiscount)
-          .then(resolve)
-          .catch(reject)
-      } else {
-        resolve(totalDiscount)
+        resolve(sumDiscount)
       }
     })
   }
