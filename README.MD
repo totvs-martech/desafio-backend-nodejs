@@ -13,7 +13,9 @@ Add PORT to run the project (preference for 3000).\
 On variable `PORT` you can use `3000`\
 On variable `DATA_PATH` you can use `../`\
 On variable `NODE_ENV` use `development`, if you testing.\
-On variable `API_KEY_PAGARME` use your api_key getting on website.
+On variable `API_KEY_PAGARME` use your api_key getting on website.\
+On variable `REDIS_PORT` by pattern are `6379`, but you can alter.\
+On variable `REDIS_HOST` by pattern are `127.0.0.1`, but you can alter.\
 
 ## Third Step - Docker
 Run docker compose for use PostgreSQL and Sequelize.\
@@ -60,16 +62,15 @@ Required: name, value and factor.\
 On Header you are add `Authorization` with value `token` returned on second step\
 Use `/product` with method `GET`.\
 
+OBS: Cart key is generate by your cookie. For default is the website generate this token, but if you prefer you can add the key `cookie` on your `header`.\
+
 5) List cart:\
-On Header you are add `Authorization` with value `token` returned on second step\
 Use `/cart` with method `GET`.\
 
 6) Add Product on cart:\
-On Header you are add `Authorization` with value `token` returned on second step\
 Use `/product/:id/add-cart` with method `POST`.\
 
 7) Remove Product on cart:\
-On Header you are add `Authorization` with value `token` returned on second step\
 Use `/product/:id/remove-cart` with method `POST`.\
 
 7) Checkout on cart:\

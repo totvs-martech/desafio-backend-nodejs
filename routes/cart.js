@@ -19,7 +19,7 @@ router.use(json());
 router.get('/', oauth.auth, (req, res, next) => {
   const cart = new Cart()
   cart
-    .getCartByKey(req.headers['authorization'])
+    .getCartByKey(req.headers.cookie)
     .then((hashGenerated) => res.json(hashGenerated))
     .catch((err) => {
       next(Response.internalError(res, err.message))
@@ -32,7 +32,7 @@ router.get('/', oauth.auth, (req, res, next) => {
 router.post('/checkout', oauth.auth, (req, res, next) => {
   const cart = new Cart()
   cart
-    .checkout(req.headers['authorization'])
+    .checkout(req.headers.cookie)
     .then((hashGenerated) => res.json(hashGenerated))
     .catch((err) => {
       next(Response.internalError(res, err.message))

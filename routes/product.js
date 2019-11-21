@@ -88,9 +88,8 @@ router.delete('/:id', oauth.auth, (req, res, next) => {
  */
 router.post('/:id/add-cart', oauth.auth, (req, res, next) => {
   const product = new Product()
-  
   product
-    .addProductCart(req.params.id, req.headers['authorization'])
+    .addProductCart(req.params.id, req.headers.cookie)
     .then((cart) => res.json(cart))
     .catch((err) => {
       next(Response.internalError(res, err.message))
@@ -103,7 +102,7 @@ router.post('/:id/add-cart', oauth.auth, (req, res, next) => {
 router.post('/:id/remove-cart', oauth.auth, (req, res, next) => {
   const product = new Product()
   product
-    .removeProductCart(req.params.id, req.headers['authorization'])
+    .removeProductCart(req.params.id, req.headers.cookie)
     .then((cart) => res.json(cart))
     .catch((err) => {
       next(Response.internalError(res, err.message))
