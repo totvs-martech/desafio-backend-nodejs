@@ -18,7 +18,7 @@ On variable `REDIS_PORT` by pattern are `6379`, but you can alter.\
 On variable `REDIS_HOST` by pattern are `127.0.0.1`, but you can alter.
 
 ## Third Step - Docker
-Run docker compose for use PostgreSQL and Sequelize.\
+Run docker compose for use PostgreSQL and REDIS.\
 Run the command `docker-compose up`
 
 ## Fourth Step - Database
