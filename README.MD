@@ -59,12 +59,12 @@ Required: email and password.\
 OBS: Returned on response the key `token` you'll use on `header`.
 
 3) Create Product:\
-On Header you are add `Authorization` with value `token` returned on second step\
+On Header you are add `Authorization` with value `Bearer ${token}` returned on second step\
 Use `/product` with method `POST`.\
 Required: name, value and factor.
 
 4) Get all Products:\
-On Header you are add `Authorization` with value `token` returned on second step\
+On Header you are add `Authorization` with value `Bearer ${token}` returned on second step\
 Use `/product` with method `GET`.
 
 5) List cart:\
@@ -77,11 +77,11 @@ Use `/product/:id/add-cart` with method `POST`.
 Use `/product/:id/remove-cart` with method `POST`.
 
 7) Checkout on cart:\
-On Header you are add `Authorization` with value `token` returned on second step\
+On Header you are add `Authorization` with value `Bearer ${token}` returned on second step\
 Use `/cart/checkout` with method `POST`.
 
 ## Deploy
 On file `post-receive` in folder `hooks` alter the variablea `${PATH}` and `${NAME_PROJECT}` to the values you set.\
-Next, create this file in folder `.git/hooks`
-Finnaly, create you deploy you need add deploy on remote.\
+Next, create file `post-receive` in folder `.git/hooks` in your server.\
+Finnaly, create you deploy you need add deploy on remote on your machine.\
 Like `git remote add deploy ${USER}@${DOMAIN}:/${PATH}/${NAME_PROJECT}/.git`
