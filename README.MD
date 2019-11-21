@@ -1,6 +1,7 @@
 # Backend
 This project is backend by Eduardo.\
 Follow the steps.\
+** Clone this repo in your machine **
 ** Install nodeJS before start. **\
 ** Open terminal and enter on project folder **
 
@@ -76,3 +77,8 @@ Use `/product/:id/remove-cart` with method `POST`.
 7) Checkout on cart:\
 On Header you are add `Authorization` with value `token` returned on second step\
 Use `/cart/checkout` with method `POST`.
+
+## Deploy
+On file `post-receive` in folder `hooks` alter the variablea `${PATH}` and `${NAME_PROJECT}` to the values you set.\
+And next, create you deploy you need add deploy on remote.\
+Like `git remote add deploy ${USER}@${DOMAIN}:/${PATH}/${NAME_PROJECT}/.git`
