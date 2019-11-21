@@ -15,7 +15,7 @@ On variable `DATA_PATH` you can use `../`\
 On variable `NODE_ENV` use `development`, if you testing.\
 On variable `API_KEY_PAGARME` use your api_key getting on website.\
 On variable `REDIS_PORT` by pattern are `6379`, but you can alter.\
-On variable `REDIS_HOST` by pattern are `127.0.0.1`, but you can alter.\
+On variable `REDIS_HOST` by pattern are `127.0.0.1`, but you can alter.
 
 ## Third Step - Docker
 Run docker compose for use PostgreSQL and Sequelize.\
@@ -42,37 +42,37 @@ If you need test the functions run the command `npm run test`.\
 We are using [jest](https://jestjs.io)
 
 ## Use project
-If you are on FINAL STEP your project is running. So, to create product and list you can do this without needing login. To agreggate products in your cart you need login on backend to (this is like a cookie in your browse), this are use on REDIS because the products in your cart is temporary and the JWT to.\
+If you are on FINAL STEP your project is running. So, to create product and list you can do this without needing login.\
 OBS: Always to access any endpoints is necessary in header `Authorization: Bearer ${YOUR_TOKEN_LOGIN}`\
+OBS: Cart key is generate by your cookie. For default is the website generate this token, but if you prefer you can add the key `cookie` on your `header`.
+
 1) Register:\
 Use `/user` with method `POST`.\
-Required: Name, email and password.\
+Required: Name, email and password.
 
 2) Login:\
 Use `/user/login` with method `POST`.\
 Required: email and password.\
-OBS: Returned on response the key `token` you'll use on `header`.\
+OBS: Returned on response the key `token` you'll use on `header`.
 
 3) Create Product:\
 On Header you are add `Authorization` with value `token` returned on second step\
 Use `/product` with method `POST`.\
-Required: name, value and factor.\
+Required: name, value and factor.
 
 4) Get all Products:\
 On Header you are add `Authorization` with value `token` returned on second step\
-Use `/product` with method `GET`.\
-
-OBS: Cart key is generate by your cookie. For default is the website generate this token, but if you prefer you can add the key `cookie` on your `header`.\
+Use `/product` with method `GET`.
 
 5) List cart:\
-Use `/cart` with method `GET`.\
+Use `/cart` with method `GET`.
 
 6) Add Product on cart:\
-Use `/product/:id/add-cart` with method `POST`.\
+Use `/product/:id/add-cart` with method `POST`.
 
 7) Remove Product on cart:\
-Use `/product/:id/remove-cart` with method `POST`.\
+Use `/product/:id/remove-cart` with method `POST`.
 
 7) Checkout on cart:\
 On Header you are add `Authorization` with value `token` returned on second step\
-Use `/cart/checkout` with method `POST`.\
+Use `/cart/checkout` with method `POST`.
