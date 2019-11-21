@@ -1,5 +1,5 @@
 .env
-/config/config.json
+/config/config.js
 node_modules/
 uploads/*
 .DS_Store

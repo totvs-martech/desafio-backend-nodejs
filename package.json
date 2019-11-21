@@ -9,7 +9,7 @@
     "lint": "eslint *.js **/*.js",
     "test": "jest",
     "seeds": "node ./infra/database/seeds/generateSeeds.js",
-    "config": "cp ./config/config.example.json ./config/config.json"
+    "config": "cp ./config/config.example.js ./config/config.js"
   },
   "repository": {
     "type": "git",

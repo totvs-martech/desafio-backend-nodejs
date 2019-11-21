@@ -9,12 +9,13 @@ Follow the steps.\
 Install dependencies `npm install` or `yarn install`
 
 ## Second Step - Copy
-Copy `.env` using `cp .env.example .env`\
+Copy `.env` using `cp .env.example .env`.\
 Add PORT to run the project (preference for 3000).\
+Open file `.env`.\
 On variable `PORT` you can use `3000`\
 On variable `DATA_PATH` you can use `../`\
-On variable `NODE_ENV` use `development`, if you testing.\
-On variable `API_KEY_PAGARME` use your api_key getting on website.\
+On variable `NODE_ENV` use `development`, if you are testing.\
+On variable `API_KEY_PAGARME` use `ak_test_Fdo1KyqBTdnTFeLgBhkgRcgm9hwdzd` or your api_key getting on website.\
 On variable `REDIS_PORT` by pattern are `6379`, but you can alter.\
 On variable `REDIS_HOST` by pattern are `127.0.0.1`, but you can alter.
 
@@ -24,14 +25,15 @@ Run the command `docker-compose up`
 
 ## Fourth Step - Database
 When docker is up, generate database and tables.\
+First copy the file `config` with command `npm run config`.\
+You need create database on PostgreSQL. You can use a software to this. I was use [NAVICAT](https://www.navicat.com/en/download/navicat-premium)\
 Run the command `npx sequelize-cli db:migrate`.
 
 ## Fifth Step - Start/Test
-First copy the file `config` with command `npm run config`.\
 To start Application run the command `npm start` or `npm run dev` if you are a dev.
 
 ## Final Step - Check all is ok
-To check all is ok, you can use url `http://localhost:${PORT}/healthcheck`\
+To check all is ok, you can use url `http://localhost:${PORT}/healthcheck` with method `GET`.\
 Can be return 'All is ok.'
 
 ## TDD
