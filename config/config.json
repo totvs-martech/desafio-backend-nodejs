@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "totvs",
+    "host": "db",
+    "port": 5432,
+    "dialect": "postgresql"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "totvs",
+    "host": "db",
+    "port": 5432,
+    "dialect": "postgresql"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "totvs",
+    "host": "db",
+    "port": 5432,
+    "dialect": "postgresql"
+  }
+}

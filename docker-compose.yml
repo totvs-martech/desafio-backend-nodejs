@@ -1,0 +1,32 @@
+version: "3"
+services:
+  db:
+    image: mvmsp/mvmsptotvs:init
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres      
+      POSTGRES_DB: totvs 
+  redis:
+      image: redis
+      container_name: totvs
+      expose:
+        - 6379
+      ports:
+        - "127.0.0.1:6379:6379"  
+  app:
+      build: ./
+      volumes:
+        - ./:/var/www/app
+      links:
+        - redis
+      ports:
+        - 3000:3000
+      environment:
+        REDIS_URL: redis://totvs
+        NODE_ENV: development
+        PORT: 3000
+        DATABASE_URL: postgres://postgres:postgres@db:5432/totvs      
+      command:
+        sh -c 'npm i && npm start'      
