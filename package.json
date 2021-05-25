@@ -13,6 +13,7 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
+    "pagarme": "^4.16.1",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "redis": "^3.1.2",

@@ -1,4 +1,5 @@
 const redisClient = require('./redis-client');
+const pagarme = require('pagarme')
 
 const save = async (req, res) => {
 
@@ -15,7 +16,6 @@ const getContent = async (req, res) => {
 
     const { key } = req.params;
     const rawData = await redisClient.getAsync(key);
-    console.log(rawData)
     return res.json(JSON.parse(rawData));
 
 };
@@ -32,11 +32,10 @@ const payment = async (req, res) => {
   
 const doPayment = async (key)=> {
     try {
-      const repositoryCart = await redisClient.getAsync(key)
-      const cart = await buildCart(repositoryCart)
+      const rawData = await redisClient.getAsync(key)
+      const cart = await buildCart(JSON.parse(rawData))
       console.log(cart)
-      //const totalCart = cart.total.toString().replace(/[!@#$%^´~áíóúéãõêîôâ&*()_+\-=\\[\]{}':"\\|,.<>\\/?]+/g, '')
-      //return connectPagarme(repositoryCart, Number(totalCart))
+      return await connectPagarme(cart)
     } catch (error) {
       return error
     }
@@ -63,9 +62,9 @@ const addOrUpdateItem = async (key, item) => {
 
         } else {
 
-            console.log(allProducts);
+            
             allProducts = JSON.parse(allProducts);
-            console.log(allProducts.products.find(element => element.id === item.id));
+            
             findAndUpdatenCart(item, allProducts.products);
 
         }
@@ -95,11 +94,10 @@ const findAndUpdatenCart = (item, products) => {
 
 const buildCart = async (cart) => {
     try {
-        const subTotal = await cartSubtotal(cart);
-        console.log(subtotal);
-        return null;
-        /*
-        const totalCart = await cartTotal(cart)
+        const subTotal = await cartSubtotal(cart.products)
+        const totalCart = 0
+        
+        
         const productsType = ['A', 'B', 'C'];
         const factorProgress = [1, 5, 10];
         const maxDiscount = [5, 15, 30];
@@ -107,65 +105,63 @@ const buildCart = async (cart) => {
 
         for (var index = 0; index < productsType.length; index++) {
 
-            productsFactor = await justProductsFactor(cart, productsType[index])
-            productsDiscount[index] = checkDiscount(productsFactor, maxDiscount[index], factorProgress[index], 0)
-
+            productsFactor = await justProductsFactor(cart.products, productsType[index])
+            
+            productsDiscount[index] = await checkDiscount(productsFactor, maxDiscount[index], factorProgress[index], 0)
+            
         }
 
-        const discount = await fixDiscount(productsDiscount[0], productsDiscount[1], productsDiscount[2])
+        const discount =  fixDiscount(productsDiscount[0], productsDiscount[1], productsDiscount[2])
+       /* {
+            "id": "r123",
+            "title": "Red pill",
+            "unit_price": 10000,
+            "quantity": 1,
+            "tangible": true
+          }*/
+        const items = []
+        cart.products.map((product) =>{
+            items.push(JSON.parse(`{"id" :  "${product.id}", "title" : "${product.name}", "unit_price" : ${Number(product.value)} , "quantity" : ${Number(product.quantity)}, "tangible" : true}`))
+        })
+
         const ret = {
-            products: cart,
-            totalCart,
             subTotal,
             discount,
-            total: subTotal - (subTotal * discount)
+            total: subTotal - (subTotal * discount),
+            products: items,
         }
-        return ret*/
+        return ret
     } catch (error) {
         return error
     }
 }
 
-const cartSubtotal = async (cart, subTotal = 0) => {
-    cart.forEach(product => {
-        subTotal = subTotal + (product.valor*product.quantity)
+const cartSubtotal = async (products) => {
+    let subTotal = 0;
+    products.forEach(product => {
+        subTotal = subTotal + (product.value * product.quantity)
     })
     return subTotal
 }
 
-const cartTotal = async (cart, sumValueCart = 0) => {
-    cart.forEach(p => {
-        sumValueCart = sumValueCart + p.value
-    })
-    return sumValueCart
-}
-
-const fixDiscount = (valA, valB, valC) => {
-    const totalDiscount = valA + valB + valC
-    if (totalDiscount > 30) {
-        return 30 / 100
-    }
-    return totalDiscount / 100
-}
-
-const justProductsFactor = async (cart, factor) => {
-    return cart.filter(product => {
+const justProductsFactor = async (products, factor) => {
+    return products.filter(product => {
         if (product.factor === factor) {
             return product
         }
     })
 }
 
-const checkDiscount = async (products, maxDiscount, discount, cumulativeDiscount) => {
+const checkDiscount = async (products, maxDiscount, discount, cumulativeDiscount = 0) => {
 
     return new Promise((resolve, reject) => {
 
-        var totalDiscont = 0;
+        
         products.forEach(product => {
-            totalDiscont =  totalDiscont + (discount * product.quantity);
-
-            if(totalDiscont >= maxDiscount){
-                totalDiscont = maxDiscount;
+            cumulativeDiscount =  cumulativeDiscount + (discount * product.quantity);
+            
+            if(cumulativeDiscount >= maxDiscount){
+                cumulativeDiscount = maxDiscount;
                 return false;
             }
 
@@ -177,33 +173,40 @@ const checkDiscount = async (products, maxDiscount, discount, cumulativeDiscount
 
 }
 
-const connectPagarme =  (cart, total) => {
-    try {
-      //cart = await this.newBodyCart(cart)
-      const reuest = {
-        "api_key": process.env.API_KEY_PAGARME,
-        "amount": total,
+const fixDiscount = (valA, valB, valC) => {
+    const totalDiscount = valA + valB + valC
+    if (totalDiscount > 30) {
+        return 30 / 100
+    }
+    return totalDiscount / 100
+}
+
+const connectPagarme = async (cart) => {
+
+    pagarme.client.connect({ api_key: process.ENV.PAGARME_API_KEY })
+      .then(client => client.transactions.create({
+        "amount": cart.total,
         "card_number": "4111111111111111",
         "card_cvv": "123",
         "card_expiration_date": "0922",
-        "card_holder_name": "João das Neves",
+        "card_holder_name": "Morpheus Fishburne",
         "customer": {
           "external_id": "#3311",
-          "name": "João das Neves Braulio",
+          "name": "Morpheus Fishburne",
           "type": "individual",
           "country": "br",
-          "email": "joaodasneves@got.com",
+          "email": "mopheus@nabucodonozor.com",
           "documents": [
             {
               "type": "cpf",
-              "number": "00000000000"
+              "number": "30621143049"
             }
           ],
           "phone_numbers": ["+5511999998888", "+5511888889999"],
           "birthday": "1965-01-01"
         },
         "billing": {
-          "name": "João das Neves",
+          "name": "Trinity Moss",
           "address": {
             "country": "br",
             "state": "sp",
@@ -218,7 +221,7 @@ const connectPagarme =  (cart, total) => {
           "name": "Neo Reeves",
           "fee": 1000,
           "delivery_date": "2000-12-21",
-          "expedited": 'true',
+          "expedited": true,
           "address": {
             "country": "br",
             "state": "sp",
@@ -229,13 +232,17 @@ const connectPagarme =  (cart, total) => {
             "zipcode": "06714360"
           }
         },
-        "items": cart
-      }
-      return Response.create('https://api.pagar.me/1', 'transactions', request, '')   
-    } catch (error) {
-      return error
-    }
-  }
+        "items": cart.products
+      }))
+      .then((transaction => { 
+          console.log(`retorno:${transaction}`)
+          return transaction;
+        })
+      ) 
+      .catch((err => {
+          console.log(err)
+      }))
+}
 
 
 module.exports = {
