@@ -34,7 +34,6 @@ const doPayment = async (key)=> {
     try {
       const rawData = await redisClient.getAsync(key)
       const cart = await buildCart(JSON.parse(rawData))
-      console.log(cart)
       return await connectPagarme(cart)
     } catch (error) {
       return error
@@ -182,31 +181,29 @@ const fixDiscount = (valA, valB, valC) => {
 }
 
 const connectPagarme = async (cart) => {
-
-    pagarme.client.connect({ api_key: process.ENV.PAGARME_API_KEY })
-      .then(client => client.transactions.create({
+    const payload = {
         "amount": cart.total,
         "card_number": "4111111111111111",
         "card_cvv": "123",
         "card_expiration_date": "0922",
-        "card_holder_name": "Morpheus Fishburne",
+        "card_holder_name": "João das Neves",
         "customer": {
           "external_id": "#3311",
-          "name": "Morpheus Fishburne",
+          "name": "João das Neves Braulio",
           "type": "individual",
           "country": "br",
-          "email": "mopheus@nabucodonozor.com",
+          "email": "joaodasneves@got.com",
           "documents": [
             {
               "type": "cpf",
-              "number": "30621143049"
+              "number": "00000000000"
             }
           ],
           "phone_numbers": ["+5511999998888", "+5511888889999"],
           "birthday": "1965-01-01"
         },
         "billing": {
-          "name": "Trinity Moss",
+          "name": "João das Neves",
           "address": {
             "country": "br",
             "state": "sp",
@@ -233,11 +230,17 @@ const connectPagarme = async (cart) => {
           }
         },
         "items": cart.products
-      }))
-      .then((transaction => { 
-          console.log(`retorno:${transaction}`)
-          return transaction;
-        })
+      };
+
+    pagarme.client.connect({ api_key: `'${process.ENV.PAGARME_API_KEY}'` })
+      .then(client => client.transactions.create(payload))
+        .then((transaction => { 
+            console.log(`retorno:${transaction}`)
+            return transaction;
+            })
+       /* .catch((err => {
+            console.log(err)
+        }))    */
       ) 
       .catch((err => {
           console.log(err)
