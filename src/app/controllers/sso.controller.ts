@@ -1,7 +1,6 @@
 import { Controller, Post, Get, Delete, Put } from "../../lib/decorators";
 import { HttpRequest } from "../../lib/adapter/http.request.interface";
 import { Http } from '../../lib/rest/status';
-import {sqlData} from '../../lib/database';
 import {userRole, superRole, nonRole, allRole} from '../http/middlewares/acl';
 
 @Controller('/sso')

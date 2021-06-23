@@ -1,12 +1,13 @@
-const sql = require('mssql')
-let sqlData = null;
+import mongoose = require("mongoose");
 
-const Database =  async (uri) => {
-    try {
-        sqlData = await sql.connect(uri)
-    } catch (error) {
-        console.log(error)
-    }
-}
+const connectToDatabase = (uri: string) =>
+  mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  });
 
-export {sqlData, Database}
+mongoose.set('useCreateIndex', true)
+
+
+export {connectToDatabase}

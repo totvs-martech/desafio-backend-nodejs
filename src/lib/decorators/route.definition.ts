@@ -1,5 +1,5 @@
 
-import {userRole, allRole, restaurantRole, nonRole} from '../../app/http/middlewares/acl';
+import {userRole, allRole, superRole, nonRole} from '../../app/http/middlewares/acl';
 
 export interface RouteDefinition {
   // Path to our route
