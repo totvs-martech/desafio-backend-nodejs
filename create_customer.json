@@ -1,0 +1,37 @@
+{
+    "phone_numbers": [
+        "+556198112595",
+        "556198112592"
+    ],
+    "external_id": "XXA1234",
+    "name": "Thales Andrade",
+    "type": "",
+    "country": "Brasil",
+    "birthday": "2021-06-23T17:42:07.523Z",
+    "address": [
+        {
+            "country": "br",
+            "state": "sp",
+            "city": "Cotia",
+            "neighborhood": "Rio Cotia",
+            "street": "Rua Matrix",
+            "street_number": "9999",
+            "zipcode": "06714360"
+        }
+    ],
+    "documents": [
+        {
+            "type": "cpf",
+            "number": "00000000000"
+        }
+    ],
+    "card": [
+        {
+            "amount": "21000",
+            "card_number": "4111111111111111",
+            "card_cvv": 123,
+            "card_expiration_date": "0922",
+            "card_holder_name": "João das Neves"
+        }
+    ]
+}
