@@ -1,0 +1,14 @@
+{
+    "version": "4.0.0",
+    "compilerOptions": {
+      "outDir": "./dist",
+      "lib": ["ES5", "ES6", "ES7", "ES2018", "ES2019"],
+      "target": "ES2019",
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "noStrictGenericChecks": true
+    },
+    "include": ["./src/**/*"]
+  }

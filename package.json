@@ -1,0 +1,38 @@
+{
+  "name": "desafio-backend-nodejs",
+  "version": "1.0.0",
+  "description": "Desafio Backend Developer",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-cors": "0.0.16",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^10.0.0",
+    "mongoose": "^5.12.14",
+    "nodemon": "^2.0.7",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^4.2.3",
+    "util": "^0.12.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/totvs-store/desafio-backend-nodejs.git"
+  },
+  "author": "Thales Pinho Andrade",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/totvs-store/desafio-backend-nodejs/issues"
+  },
+  "homepage": "https://github.com/totvs-store/desafio-backend-nodejs#readme"
+}
