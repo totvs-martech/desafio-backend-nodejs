@@ -2,7 +2,7 @@ import { Controller, Post, Get, Delete, Put } from "../../lib/decorators";
 import { HttpRequest } from "../../lib/adapter/http.request.interface";
 import { Http } from '../../lib/rest/status';
 import {userRole, superRole, nonRole, allRole} from '../http/middlewares/acl';
-import {create} from '../repository/customer';
+import {addProduct, create, removeProduct} from '../repository/shoppingcard';
 
 @Controller('/shoppingcard')
 export class ShoppingCardController {
@@ -17,32 +17,32 @@ export class ShoppingCardController {
       try {
           const { params, filter, body } = HttpRequest
           const result = await create(body);
-          return Http.ok("")
+          return Http.ok(result)
         } catch (error) {
           return Http.badRequest({ error: error.message });
         }
    
   }
 
-  @Put('', [nonRole])
+  @Put('/:id', [nonRole])
     public async update(HttpRequest: HttpRequest) {
 
       try {
           const { params, filter, body } = HttpRequest
-          const result = await create(body);
-          return Http.ok("")
+          const result = await addProduct(body, params.id);
+          return Http.ok(result)
         } catch (error) {
           return Http.badRequest({ error: error.message });
         }
    
   }
-  @Delete('', [nonRole])
+  @Delete('/:id', [nonRole])
     public async delete(HttpRequest: HttpRequest) {
 
       try {
           const { params, filter, body } = HttpRequest
-          const result = await create(body);
-          return Http.ok("")
+          const result = await removeProduct(body, params.id);
+          return Http.ok(result)
         } catch (error) {
           return Http.badRequest({ error: error.message });
         }

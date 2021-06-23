@@ -3,7 +3,7 @@ import { model, Schema, Model, Document, ObjectId } from 'mongoose';
 
 interface IShoppingCard extends Document {
 
-    product: [ObjectId];
+    products: [ObjectId];
     status: boolean;
     customer: ObjectId;
     expiration: Date;
@@ -13,13 +13,14 @@ interface IShoppingCard extends Document {
 
 const ShoppingCardSchema: Schema = new Schema({
   
-  product : { type: [Schema.Types.ObjectId], ref: 'products', required: false },
-    status: { type: String, required: false },
+    products : { type: [Schema.Types.ObjectId], ref: 'products', required: false },
+    status: { type: String, default: true, required: false },
     customer: { type: Schema.Types.ObjectId, ref: 'customers', required: true },
     expiration: {type: Date, default: () => {
        const date = new Date(); 
        date.setMinutes(date.getMinutes() + 10)
-      }, required: true},
+       return date
+      }},
     total: {type: Number}
     })
     
