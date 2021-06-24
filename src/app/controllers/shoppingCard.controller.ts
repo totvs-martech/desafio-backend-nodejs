@@ -29,7 +29,7 @@ export class ShoppingCardController {
 
       try {
           const { params, filter, body } = HttpRequest
-          const result = await payment(body);
+          const result = await payment(params.id);
           return Http.ok(result)
         } catch (error) {
           return Http.badRequest({ error: error.message });
