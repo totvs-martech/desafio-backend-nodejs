@@ -7,7 +7,9 @@ interface IShoppingCard extends Document {
     status: boolean;
     customer: ObjectId;
     expiration: Date;
-    total: Number;
+    total: number;
+    discount: number;
+    amounttopay: number;
 
 }
 
