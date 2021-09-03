@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductsService } from 'src/products/products.service';
+import {
+  calculateCartPriceWithDiscount,
+  calculateProductPriceWithDiscount,
+} from './carts.helper';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
 import { Cart, CartDocument } from './schemas/cart.schema';
-import { IndividualProductOrder } from './schemas/individualProductOrder.entity';
+import { CartItem } from './schemas/cartItem';
 
 @Injectable()
 export class CartsService {
@@ -29,33 +32,35 @@ export class CartsService {
 
   async addProduct(cartId: string, productId: string, productCount: number) {
     const product = await this.productsService.findOne(productId);
-    const productCart = new IndividualProductOrder(productCount, product);
+    const cartItem = new CartItem(productCount, product);
     if (!cartId) {
+      const total = calculateProductPriceWithDiscount(cartItem);
       const newCart = {
-        total: product.value * productCount,
+        total,
         count: productCount,
-        products: [productCart],
+        items: [cartItem],
       };
       return this.create(newCart);
     } else {
       const cart = await this.findOne(cartId);
-      cart.total += product.value * productCount;
-      cart.count += productCount;
-      if (
-        cart.products.find(
-          (x) => x.product._id.toString() === product._id.toString(),
-        )
-      )
-        cart.products.find(
-          (x) => x.product._id.toString() === product._id.toString(),
-        ).count += productCount;
-      else cart.products.push(productCart);
-      return cart.save();
+      const targetItem = cart.items.find(
+        (item) => item.product._id.toString() === product._id.toString(),
+      );
+      if (targetItem) {
+        (targetItem.count += productCount),
+          (cart.items = cart.items.map((item) =>
+            item.product._id === targetItem.product._id ? targetItem : item,
+          ));
+        cart.count += productCount;
+        cart.total = calculateCartPriceWithDiscount(cart);
+        return cart.save();
+      } else {
+        cart.items.push(cartItem);
+        cart.count += productCount;
+        cart.total = calculateCartPriceWithDiscount(cart);
+        return cart.save();
+      }
     }
-  }
-
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
   }
 
   remove(id: number) {

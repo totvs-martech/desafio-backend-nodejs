@@ -1,6 +1,6 @@
 import { Product } from 'src/products/schemas/product.schema';
 
-export class IndividualProductOrder {
+export class CartItem {
   count: number;
   product: Product;
 

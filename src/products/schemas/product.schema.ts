@@ -5,7 +5,6 @@ export type ProductDocument = Product & Document;
 
 @Schema()
 export class Product {
-  @Prop()
   _id: MongooseSchema.Types.ObjectId;
 
   @Prop()
