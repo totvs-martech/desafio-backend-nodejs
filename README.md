@@ -1,97 +1,73 @@
-# Desafio Backend Developer
-A Totvs está criando um aplicativo de e-commerce, foi feita uma planning com o Time o qual você é integrante e a Sprint começou. Suas tarefas são as seguintes: 
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+</p>
 
-##### Criação de Produtos na loja ###
-Criar os endpoints para adicionar e listar os produtos da loja. Esse produto deve ter os seguintes atributos: Nome, Descrição, Imagem, Valor e Fator. Existem três fatores A, B e C.  
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-##### Criação do Carrinho de Compras ###
-Criar endpoints para adicionar, consultar e remover os produtos do carrinho de compras. A consulta dos produtos deve conter além da lista, a quantidade e valor total dos produtos adicionados seguindo a seguinte regra de fator
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
- - Os produtos de fator A tem um desconto progressivo de 1% a cada item adicionado no carrinho limitado a 5% de desconto. 
- - Os produtos de fator B tem um desconto progressivo de 5% a cada item adicionado no carrinho limitado a 15% de desconto.
- - Os produtos de fator C tem um desconto progressivo de 10% a cada item adicionado no carrinho limitado a 30% de desconto.
- - Um detalhe importante, o total de desconto do carrinho de compras não pode superar 30%.
+## Description
 
-##### Checkout pagar.me ###
-Para finalizar, crie um endpoint para fazer o checkout do carrinho de compras através do pagar.me
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-#### Requisitos:
- - Utilizar Node JS.
- - Gestão de dependências via gerenciador de pacotes.
- - Persistir os dados.
- - Descreva no README os passos para execução do seu projeto.
- - Deixe seu repositório público para analise do Pull Request.
+## Installation
 
-#### Ganha mais pontos:
- - Criação testes unitários
- - Garantia da segurança dos dados
- - Criação de uma estrutura de deploy da aplicação
- - Garantia a escalabilidade da aplicação (Pessoas | Infraestrutura)
- - Fique a vontade para adicionar mais features na loja desde que esteja dentro do contexto.
-
-#### Submissão
- - Criar um fork desse projeto e entregar via Pull Request
-
-#### Prazo de Entrega
- - 4 Dias
-
-#### Dados de acesso a api do pagar.me
- - Documentação: https://docs.pagar.me/reference
- - Endpoint para o Checkout: https://api.pagar.me/1/transactions
- - ApiKey: ak_test_Fdo1KyqBTdnTFeLgBhkgRcgm9hwdzd
-###Json de Envio:
-```js
-{
-    "amount": 21000,
-    "card_number": "4111111111111111",
-    "card_cvv": "123",
-    "card_expiration_date": "0922",
-    "card_holder_name": "João das Neves",
-    "customer": {
-      "external_id": "#3311",
-      "name": "João das Neves Braulio",
-      "type": "individual",
-      "country": "br",
-      "email": "joaodasneves@got.com",
-      "documents": [
-        {
-          "type": "cpf",
-          "number": "00000000000"
-        }
-      ],
-      "phone_numbers": ["+5511999998888", "+5511888889999"],
-      "birthday": "1965-01-01"
-    },
-    "billing": {
-      "name": "João das Neves",
-      "address": {
-        "country": "br",
-        "state": "sp",
-        "city": "Cotia",
-        "neighborhood": "Rio Cotia",
-        "street": "Rua Matrix",
-        "street_number": "9999",
-        "zipcode": "06714360"
-      }
-    },
-    "shipping": {
-      "name": "Neo Reeves",
-      "fee": 1000,
-      "delivery_date": "2000-12-21",
-      "expedited": true,
-      "address": {
-        "country": "br",
-        "state": "sp",
-        "city": "Cotia",
-        "neighborhood": "Rio Cotia",
-        "street": "Rua Matrix",
-        "street_number": "9999",
-        "zipcode": "06714360"
-      }
-    },
-    "items": [
-   ITEMS_DO_SEU_CARRINHO
-    ]
-}
+```bash
+$ npm install
 ```
-# Boa Sorte!
+
+## Running the app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](LICENSE).
