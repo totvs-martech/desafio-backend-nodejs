@@ -30,7 +30,11 @@ export class CartsService {
     return await this.cartModel.findById(id).exec();
   }
 
-  async addProduct(cartId: string, productId: string, productCount: number) {
+  async addProduct(
+    cartId: string,
+    productId: string,
+    productCount: number,
+  ): Promise<Cart> {
     const product = await this.productsService.findOne(productId);
     const cartItem = new CartItem(productCount, product);
     if (!cartId) {
@@ -47,10 +51,10 @@ export class CartsService {
         (item) => item.product._id.toString() === product._id.toString(),
       );
       if (targetItem) {
-        (targetItem.count += productCount),
-          (cart.items = cart.items.map((item) =>
-            item.product._id === targetItem.product._id ? targetItem : item,
-          ));
+        targetItem.count += productCount;
+        cart.items = cart.items.map((item) =>
+          item.product._id === targetItem.product._id ? targetItem : item,
+        );
         cart.count += productCount;
         cart.total = calculateCartPriceWithDiscount(cart);
         return cart.save();
@@ -63,7 +67,26 @@ export class CartsService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async removeProduct(
+    cartId: string,
+    productId: string,
+    productCount: number,
+  ): Promise<Cart> {
+    const product = await this.productsService.findOne(productId);
+    const cart = await this.findOne(cartId);
+    const targetItem = cart.items.find(
+      (item) => item.product._id.toString() === product._id.toString(),
+    );
+    if (targetItem) {
+      targetItem.count -= productCount;
+      cart.items = cart.items.map((item) =>
+        item.product._id === targetItem.product._id ? targetItem : item,
+      );
+      cart.count -= productCount;
+      cart.total = calculateCartPriceWithDiscount(cart);
+      return cart.save();
+    } else {
+      throw new Error('0');
+    }
   }
 }
