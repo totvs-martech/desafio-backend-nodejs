@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { CartsService } from './carts.service';
 import { CreateCartDto } from './dto/create-cart.dto';
+import { Cart } from './schemas/cart.schema';
 
 @Controller('carts')
 export class CartsController {
@@ -12,7 +13,7 @@ export class CartsController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Cart[]> {
     return this.cartsService.findAll();
   }
 
@@ -37,5 +38,10 @@ export class CartsController {
     @Body('count') count: number,
   ) {
     return this.cartsService.removeProduct(cart, product, count);
+  }
+
+  @Post('/checkout')
+  checkout(@Body('cart') cart: string) {
+    return this.cartsService.checkout(cart);
   }
 }
